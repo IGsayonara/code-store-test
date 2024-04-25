@@ -1,9 +1,10 @@
 import { IMovie } from '../interfaces/movie.interface';
 import { IFullMovie } from '../interfaces/fullMovie.interface';
+import * as process from 'process';
 
 export class MovieToPdfSerializer {
   // Base URL for the movie links
-  private baseUrl: string = 'http://localhost:3000/movies';
+  private baseUrl: string = process.env.APP_BASE_URL + '/movies';
 
   // Method to generate stars based on vote average
   private generateStars(voteAverage: number): string {
@@ -93,7 +94,7 @@ export class MovieToPdfSerializer {
         <body>
           <div class="container">
             <div class="poster-column">
-              <img src="https://image.tmdb.org/t/p/original/${movie.poster_image}" alt="Poster" class="poster">
+              <img src="${process.env.MOVIEDB_IMAGES_URL}/${movie.poster_image}" alt="Poster" class="poster">
             </div>
             <div class="details-column">
               <h1 class="title">${movie.title}</h1>

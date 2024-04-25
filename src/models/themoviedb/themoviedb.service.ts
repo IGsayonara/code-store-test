@@ -6,12 +6,16 @@ import * as process from 'process';
 
 @Injectable()
 export class TheMovieDbService {
+  private axiosInstance = axios.create({
+    baseURL: process.env.MOVIEDB_BASE_URL,
+    params: {
+      api_key: process.env.MOVIEDB_API_KEY,
+    },
+  });
   async fetchPopularMovies(): Promise<ThePopularMoviesDbResponseDto> {
     try {
       const response: AxiosResponse<ThePopularMoviesDbResponseDto> =
-        await axios.get(
-          `https://api.themoviedb.org/3/movie/popular?api_key=${process.env.MOVIEDB_API_KEY}`,
-        );
+        await this.axiosInstance.get(`/movie/popular`);
       return response.data;
     } catch (error) {
       throw new Error('Error fetching popular movies');
@@ -20,9 +24,8 @@ export class TheMovieDbService {
 
   async fetchMovie(id: number): Promise<TheFullMovieResponseDto> {
     try {
-      const response: AxiosResponse<TheFullMovieResponseDto> = await axios.get(
-        `https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.MOVIEDB_API_KEY}`,
-      );
+      const response: AxiosResponse<TheFullMovieResponseDto> =
+        await this.axiosInstance.get(`/movie/${id}`);
       return response.data;
     } catch (error) {
       throw new Error(`Error fetching movie with id ${id}`);
