@@ -3,7 +3,6 @@ import axios, { AxiosResponse } from 'axios';
 import { ThePopularMoviesDbResponseDto } from './dto/themoviedb-popular.dto';
 import { TheFullMovieResponseDto } from './dto/thefullmoviedb.dto';
 import * as process from 'process';
-console.log(process.env.MOVIEDB_API_KEY);
 
 @Injectable()
 export class TheMovieDbService {
