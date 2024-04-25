@@ -2,7 +2,7 @@ import { IMovie } from '../interfaces/movie.interface';
 import { IFullMovie } from '../interfaces/fullMovie.interface';
 
 export class MovieToPdfSerializer {
-  // Base URL for the movie links (you should replace this with your actual base URL)
+  // Base URL for the movie links
   private baseUrl: string = 'http://localhost:3000/movies';
 
   // Method to generate stars based on vote average
@@ -34,6 +34,7 @@ export class MovieToPdfSerializer {
     return `
       <html>
         <head>
+          <title>Popular movies</title>
           <style>
             body { font-family: 'Helvetica', sans-serif; }
             table { width: 100%; border-collapse: collapse; }
@@ -65,37 +66,43 @@ export class MovieToPdfSerializer {
     `;
   }
 
-  public serializeFullMovie(movie: IFullMovie): string {
-    const movieLink = `${this.baseUrl}/${movie.id}`;
+  serializeFullMovie(movie: IFullMovie): string {
     const stars = this.generateStars(movie.vote_average);
+    const googleBaseUrl = 'https://www.google.com/search';
+    const queryParam = encodeURIComponent(movie.title);
+    const googleLink = `${googleBaseUrl}?q=${queryParam}`;
+
     return `
       <html>
         <head>
+          <title>${movie.title}</title>
           <style>
             body { font-family: 'Helvetica', sans-serif; }
+            .container { display: flex; }
+            .poster-column { flex: 0 0 auto; }
+            .details-column { flex: 1 1 auto; padding-left: 20px; }
             table { width: 100%; border-collapse: collapse; }
             th, td { padding: 10px; text-align: left; }
             th { background-color: #f2f2f2; }
-            .movie { border-bottom: 1px solid #ccc; }
-            .title { font-size: 16px; font-weight: bold; }
-            .release-date, .vote-average { font-size: 12px; }
-            .stars { font-size: 14px; }
-            .vote-average { font-weight: bold; margin-left: 10px; }
+            .title { font-size: 20px; font-weight: bold; }
+            .release-date, .vote-average { font-size: 16px; }
+            .stars { font-size: 18px; }
             .poster { max-width: 200px; }
           </style>
         </head>
         <body>
-          <table>
-            <tr>
-              <td rowspan="4"><img src="https://image.tmdb.org/t/p/original/${movie.poster_image}" alt="${movie.poster_image}" class="poster"></td>
-              <td><a href="${movieLink}" class="title">${movie.title}</a></td>
-              <td class="release-date">${movie.release_date}</td>
-            </tr>
-            <tr>
-              <td class="stars">${stars}</td>
-              <td class="vote-average">${movie.vote_average.toFixed(1)}</td>
-            </tr>
-          </table>
+          <div class="container">
+            <div class="poster-column">
+              <img src="https://image.tmdb.org/t/p/original/${movie.poster_image}" alt="Poster" class="poster">
+            </div>
+            <div class="details-column">
+              <h1 class="title">${movie.title}</h1>
+              <p class="release-date">Release Date: ${movie.release_date}</p>
+              <p class="stars">Rating: ${stars}</p>
+              <p class="vote-average">Vote Average: ${movie.vote_average.toFixed(1)}</p>
+              <a href="${googleLink}" class="movie-link">View More Details on Google!</a>
+            </div>
+          </div>
         </body>
       </html>
     `;
