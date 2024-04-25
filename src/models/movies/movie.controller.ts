@@ -5,8 +5,8 @@ import { MovieService } from './movie.service';
 export class MovieController {
   constructor(private readonly movieService: MovieService) {}
 
-  @Get('test')
-  test(): string {
-    return this.movieService.test();
+  @Get('/movies')
+  async test(): Promise<any> {
+    return await this.movieService.getPopularMoviesPdf();
   }
 }
