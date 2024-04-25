@@ -1,6 +1,9 @@
 import { IMovie } from '../interfaces/movie.interface';
-export class DtoToMovieSerializer {
-  static fromDTO<T>(dto: T, extractMovies: (dto: T) => any[]): IMovie[] {
+export class DtoToMoviesSerializer {
+  static moviesFromDTO<T>(
+    dto: T,
+    extractMovies: (dto: T) => (IMovie & any)[],
+  ): IMovie[] {
     const moviesData = extractMovies(dto);
     return moviesData.map((movie) => ({
       id: movie.id,
