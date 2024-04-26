@@ -8,7 +8,9 @@ export class MovieToPdfSerializer {
   constructor(private readonly configService: ConfigService) {}
   // Base URL for the movie links
   private baseUrl: string =
-    this.configService.get<string>('APP_BASE_URL') + '/movies';
+    this.configService.get<string>('APP_BASE_URL') +
+    this.configService.get<number>('APP_PORT') +
+    '/movies';
 
   // Method to generate stars based on vote average
   private generateStars(voteAverage: number): string {
