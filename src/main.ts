@@ -8,7 +8,7 @@ async function bootstrap() {
   const port = process.env.APP_PORT;
   if (!port) throw new Error('App port must be defined');
 
-  await app.listen(process.env.APP_PORT);
+  await app.listen(port);
 }
 
 bootstrap();
