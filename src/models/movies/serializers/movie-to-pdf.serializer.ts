@@ -1,10 +1,14 @@
 import { IMovie } from '../interfaces/movie.interface';
 import { IFullMovie } from '../interfaces/fullMovie.interface';
-import * as process from 'process';
+import { ConfigService } from '@nestjs/config';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class MovieToPdfSerializer {
+  constructor(private readonly configService: ConfigService) {}
   // Base URL for the movie links
-  private baseUrl: string = process.env.APP_BASE_URL + '/movies';
+  private baseUrl: string =
+    this.configService.get<string>('APP_BASE_URL') + '/movies';
 
   // Method to generate stars based on vote average
   private generateStars(voteAverage: number): string {
@@ -94,7 +98,7 @@ export class MovieToPdfSerializer {
         <body>
           <div class="container">
             <div class="poster-column">
-              <img src="${process.env.MOVIEDB_IMAGES_URL}/${movie.poster_image}" alt="Poster" class="poster">
+              <img src="${this.configService.get<string>('MOVIEDB_IMAGES_URL')}/${movie.poster_image}" alt="Poster" class="poster">
             </div>
             <div class="details-column">
               <h1 class="title">${movie.title}</h1>

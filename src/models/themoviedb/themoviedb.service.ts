@@ -3,13 +3,15 @@ import axios, { AxiosResponse } from 'axios';
 import { ThePopularMoviesDbResponseDto } from './dto/themoviedb-popular.dto';
 import { TheFullMovieResponseDto } from './dto/thefullmoviedb.dto';
 import * as process from 'process';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class TheMovieDbService {
+  constructor(private readonly configService: ConfigService) {}
   private axiosInstance = axios.create({
-    baseURL: process.env.MOVIEDB_BASE_URL,
+    baseURL: this.configService.get<string>('MOVIEDB_BASE_URL'),
     params: {
-      api_key: process.env.MOVIEDB_API_KEY,
+      api_key: this.configService.get<string>('MOVIEDB_API_KEY'),
     },
   });
   async fetchPopularMovies(): Promise<ThePopularMoviesDbResponseDto> {
