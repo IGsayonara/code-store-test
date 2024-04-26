@@ -31,6 +31,7 @@
 ```bash
 $ npm install
 ```
+Rename .env.example to .env and provide correct variables in there.
 
 ## Running the app
 
