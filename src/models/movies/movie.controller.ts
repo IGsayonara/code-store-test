@@ -21,7 +21,7 @@ export class MovieController {
     const pdfStream = await this.movieService.getMoviePdfStream(id);
 
     res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', 'inline; movies.pdf');
+    res.setHeader('Content-Disposition', 'inline; movie.pdf');
 
     pdfStream.pipe(res);
   }
